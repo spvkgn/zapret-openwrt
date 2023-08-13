@@ -1,0 +1,217 @@
+name: build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Run nightly
+
+env:
+  REPO: 'bol-van/zapret'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_date: ${{ steps.repo.outputs.commit_date }}
+      commit_sha: ${{ steps.repo.outputs.commit_sha }}
+      commit_url: ${{ steps.repo.outputs.commit_url }}
+      is_active: ${{ steps.activity.outputs.is_active }}
+    steps:
+      - name: Get repo data via GH API
+        id: repo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ env.REPO }}
+        run: |
+          export BRANCH=$(gh api repos/$REPO --jq '.default_branch')
+          echo "commit_date=$(gh api repos/$REPO/commits/$BRANCH --jq '.commit.committer.date')" >> $GITHUB_OUTPUT
+          echo "commit_sha=$(gh api repos/$REPO/commits/$BRANCH --jq '.sha')" >> $GITHUB_OUTPUT
+          echo "commit_url=$(gh api repos/$REPO/commits/$BRANCH --jq '.html_url')" >> $GITHUB_OUTPUT
+      - name: Check for repo activity
+        id: activity
+        env:
+          DATE: ${{ steps.repo.outputs.commit_date }}
+          URL: ${{ steps.repo.outputs.commit_url }}
+        run: |
+          TIMESTAMP=$(date --utc -d $DATE +%s)
+          DAYS=$(( ( $(date --utc +%s) - $TIMESTAMP ) / 86400 ))
+          echo "Repository activity: $(date --utc -d $DATE)"
+          echo "Commit: $URL"
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            is_active=true
+          elif [[ $DAYS -lt 1 ]] ; then
+            is_active=true
+          else
+            echo "Repository not updated."
+            is_active=false
+          fi
+          echo "is_active=$is_active" >> $GITHUB_OUTPUT
+
+  build:
+    needs: check
+    if: needs.check.outputs.is_active == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        branch: [openwrt-21.02, openwrt-22.03]
+        arch:
+          - aarch64_cortex-a53
+          - aarch64_cortex-a72
+          - aarch64_generic
+          - arm_arm1176jzf-s_vfp
+          - arm_arm926ej-s
+          - arm_cortex-a15_neon-vfpv4
+          - arm_cortex-a5_vfpv4
+          - arm_cortex-a7
+          - arm_cortex-a7_neon-vfpv4
+          - arm_cortex-a7_vfpv4
+          - arm_cortex-a8_vfpv3
+          - arm_cortex-a9
+          - arm_cortex-a9_neon
+          - arm_cortex-a9_vfpv3-d16
+          - arm_fa526
+          - arm_mpcore
+          - arm_xscale
+          - i386_pentium-mmx
+          - i386_pentium4
+          - mips64_octeonplus
+          - mips_24kc
+          - mips_4kec
+          - mips_mips32
+          - mipsel_24kc
+          - mipsel_24kc_24kf
+          - mipsel_74kc
+          - mipsel_mips32
+          - x86_64
+        include:
+          - branch: SNAPSHOT
+            arch: x86_64
+        exclude:
+          - branch: openwrt-21.02
+            arch: arm_cortex-a7_vfpv4
+    container:
+      image: openwrt/sdk:${{ matrix.arch }}-${{ matrix.branch }}
+      options: --user root
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.REPO }}
+          path: zapret
+      - name: Setup ccache
+        uses: actions/cache@v3
+        with:
+          path: /builder/.ccache
+          key: ccache-${{ matrix.arch }}-${{ matrix.branch }}-${{ needs.check.outputs.commit_sha }}
+          restore-keys: |
+            ccache-${{ matrix.arch }}-${{ matrix.branch }}-
+      - name: Build packages
+        id: build
+        continue-on-error: true
+        working-directory: /builder
+        shell: bash
+        env:
+          DATE: ${{ needs.check.outputs.commit_date }}
+          SHA: ${{ needs.check.outputs.commit_sha }}
+          ARCH: ${{ matrix.arch }}
+          BRANCH: ${{ matrix.branch }}
+          SIGN_KEY: ${{ secrets.SIGN_PRIVATE_KEY }}
+        run: |
+          export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
+          find ${GITHUB_WORKSPACE}/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
+          cp -r ${GITHUB_WORKSPACE}/zapret/tpws ./package/zapret/tpws/
+          cp -r ${GITHUB_WORKSPACE}/zapret/nfq ./package/zapret/nfqws/
+          cp -r ${GITHUB_WORKSPACE}/zapret/mdig ./package/zapret/mdig/
+          cp -r ${GITHUB_WORKSPACE}/zapret/ip2net ./package/zapret/ip2net/
+          find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          ./scripts/feeds update base packages
+          ./scripts/feeds install -a
+          make defconfig
+          make package/{ip2net,nfqws,mdig,tpws}/compile V=s -j$(nproc) CONFIG_CCACHE=1 BUILD_LOG=1
+          ./staging_dir/host/bin/ccache -d .ccache -s
+          find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.ipk$" -delete
+          echo "$SIGN_KEY" | base64 -d > key-build
+          make package/index
+          tar cvf ipk-$ARCH-$BRANCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names -C ./bin/packages/*/base .
+          tar cJvf logs-$ARCH-$BRANCH.tar.xz ./logs
+      - name: Upload IPK
+        if: steps.build.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ipk-${{ matrix.arch }}-${{ matrix.branch }}
+          path: /builder/ipk-${{ matrix.arch }}-${{ matrix.branch }}.tar
+      - name: Upload build logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs-${{ matrix.arch }}-${{ matrix.branch }}
+          path: /builder/logs-${{ matrix.arch }}-${{ matrix.branch }}.tar.xz
+
+  release:
+    needs: [check, build]
+    permissions:
+      contents: write
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        branch: ['21.02', '22.03']
+    steps:
+      - run: echo "DATE=$(date --utc -d $DATE +%Y%m%d)" >> $GITHUB_ENV
+        env:
+          DATE: ${{ needs.check.outputs.commit_date }}
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Merge artifacts
+        id: merge
+        env:
+          BRANCH: ${{ matrix.branch }}
+          DATE: ${{ env.DATE }}
+        run: |
+          mkdir -p public
+          find . -name "ipk-*$BRANCH.tar" -exec tar xvf {} --wildcards '*.ipk' \;
+          find $BRANCH -mindepth 1 -type d -exec sh -c 'tar cvf ./public/${DATE}_$(basename {}).ipk.tar -C {} .' \;
+          ls -1hs public
+      - name: Upload Nightly release
+        if: steps.merge.outcome == 'success'
+        uses: andelf/nightly-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ matrix.branch }}
+          name: '${{ env.DATE }} for OpenWrt ${{ matrix.branch }}'
+          prerelease: false
+          body: |
+            ${{ env.REPO }}@${{ needs.check.outputs.commit_sha }}
+          files: |
+            ./public/*.tar
+
+  gh-pages:
+    # if: ${{ false }} # disable for now
+    needs: [check, build]
+    permissions:
+      contents: write
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Merge artifacts
+        id: merge
+        run: |
+          mkdir public
+          find . -name 'ipk-*.tar' -exec tar xvf {} -C ./public \;
+      - name: Deploy to GH pages
+        if: steps.merge.outcome == 'success'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          full_commit_message: ${{ env.REPO }}@${{ needs.check.outputs.commit_sha }}
+          force_orphan: true
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
