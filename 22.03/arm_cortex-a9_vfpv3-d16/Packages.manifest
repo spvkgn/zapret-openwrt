@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 20240106
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1702205291
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 5249
+Filename: ip2net_20240106_arm_cortex-a9_vfpv3-d16.ipk
+Size: 5928
+SHA256sum: 9e450cea2afcddf2f242f1321af2d411280443d0cbd8b099f8b9d8b7afe93b84
+Description:  ip2net
+
+Package: mdig
+Version: 20240106
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1702205291
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 4820
+Filename: mdig_20240106_arm_cortex-a9_vfpv3-d16.ipk
+Size: 5473
+SHA256sum: 83b33b45ab7de6d2a77623ed44b023591014664bfde9334a3ddec034c5ba6fad
+Description:  mdig
+
+Package: nfqws
+Version: 20240106
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1702205291
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 53738
+Filename: nfqws_20240106_arm_cortex-a9_vfpv3-d16.ipk
+Size: 54506
+SHA256sum: d901650892e01c66acf5aac24c5d8a02a0e79f21004ab987112dae75a1b08666
+Description:  nfqws
+
+Package: tpws
+Version: 20240106
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1702205291
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 31291
+Filename: tpws_20240106_arm_cortex-a9_vfpv3-d16.ipk
+Size: 31922
+SHA256sum: 5125dc28c088a2d9cf5af6af75691ffcb0ffee16e5233feb446f259e4d0929c0
+Description:  tpws
+
