@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 20240327
+Depends: libc
+Section: net
+Architecture: mipsel_24kc
+Installed-Size: 5925
+Filename: ip2net_20240327_mipsel_24kc.ipk
+Size: 6554
+SHA256sum: 2ec4f0fcce58d42a49fda66cc6b90aacd207d481588409d614e1b85ff62ada41
+Description:  ip2net
+
+Package: mdig
+Version: 20240327
+Depends: libc
+Section: net
+Architecture: mipsel_24kc
+Installed-Size: 5125
+Filename: mdig_20240327_mipsel_24kc.ipk
+Size: 5793
+SHA256sum: 0bef0a836d085f31bd1decb6248c204f487e0db8c84ef8e3b59b651a53848c90
+Description:  mdig
+
+Package: nfqws
+Version: 20240327
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: mipsel_24kc
+Installed-Size: 60545
+Filename: nfqws_20240327_mipsel_24kc.ipk
+Size: 61219
+SHA256sum: 2eb449dcb2e80954945017588b1d1d329605b209a3e3213ae94cc9a18ac27b20
+Description:  nfqws
+
+Package: tpws
+Version: 20240327
+Depends: libc, zlib, libcap
+Section: net
+Architecture: mipsel_24kc
+Installed-Size: 35038
+Filename: tpws_20240327_mipsel_24kc.ipk
+Size: 35759
+SHA256sum: 4176fca67e27031df90db030393c48021acd1f448bd93cc36717cd02b9cba400
+Description:  tpws
+
