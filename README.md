@@ -1,7 +1,7 @@
 [![build](https://github.com/spvkgn/zapret-openwrt/actions/workflows/build.yml/badge.svg)](https://github.com/spvkgn/zapret-openwrt/actions/workflows/build.yml)
 # zapret-openwrt
 ```
-docker run --rm -it --name openwrt openwrt/rootfs
+docker run --rm -it --name openwrt openwrt/rootfs /bin/ash --login
 ```
 ```shell
 cat << "EOF" > /tmp/public.key

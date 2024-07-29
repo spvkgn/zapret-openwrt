@@ -5,9 +5,6 @@ on:
   schedule:
     - cron: '0 0 * * *' # Run nightly
 
-env:
-  REPO: 'bol-van/zapret'
-
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -22,7 +19,7 @@ jobs:
         id: gh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ env.REPO }}
+          REPO: 'bol-van/zapret'
         run: |
           BRANCH=$(gh api repos/$REPO --jq '.default_branch')
           DATE=$(gh api repos/$REPO/commits/$BRANCH --jq '.commit.committer.date')
@@ -61,10 +58,8 @@ jobs:
     if: needs.check.outputs.is_active == 'true'
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
-      max-parallel: 8
       matrix:
-        branch: [openwrt-21.02, openwrt-22.03]
+        branch: [openwrt-21.02, openwrt-22.03, openwrt-23.05]
         arch:
           - aarch64_cortex-a53
           - aarch64_cortex-a72
@@ -103,22 +98,21 @@ jobs:
       options: --user root
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          repository: ${{ env.REPO }}
+          repository: 'bol-van/zapret'
           path: zapret
 
       - name: Setup ccache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /builder/.ccache
-          key: ccache-${{ matrix.arch }}-${{ matrix.branch }}-${{ needs.check.outputs.sha }}
+          key: ccache-${{ matrix.arch }}-${{ matrix.branch }}-${{ github.run_id }}
           restore-keys: |
             ccache-${{ matrix.arch }}-${{ matrix.branch }}-
 
       - name: Build packages
         id: build
-        continue-on-error: true
         working-directory: /builder
         shell: bash
         env:
@@ -135,8 +129,8 @@ jobs:
           cp -r ${GITHUB_WORKSPACE}/zapret/mdig ./package/zapret/mdig/
           cp -r ${GITHUB_WORKSPACE}/zapret/ip2net ./package/zapret/ip2net/
           find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
-          sed 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' -i feeds.conf.default
-          sed 's|packages.*\.git|packages https://github.com/openwrt/packages.git|' -i feeds.conf.default
+          sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
+              -e 's|packages.*\.git|packages https://github.com/openwrt/packages.git|' -i feeds.conf.default
           ./scripts/feeds update base packages
           ./scripts/feeds install -a
           make defconfig
@@ -145,43 +139,49 @@ jobs:
           find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.ipk$" -delete
           echo "$SIGN_KEY" | base64 -d > key-build
           make package/index
-          tar cvf ipk-$ARCH-$BRANCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names -C ./bin/packages/*/base .
-          tar cJvf logs-$ARCH-$BRANCH.tar.xz ./logs
+          tar -C ./bin/packages/*/base -cvf ipk-$BRANCH-$ARCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names .
 
-      - name: Upload IPK
+      - name: Compress build logs
+        if: always()
+        env:
+          ARCH: ${{ matrix.arch }}
+          BRANCH: ${{ matrix.branch }}
+        run: |
+          tar -cJvf logs-$BRANCH-$ARCH.tar.xz /builder/logs
+
+      - name: Upload packages
         if: steps.build.outcome == 'success'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ipk-${{ matrix.arch }}-${{ matrix.branch }}
-          path: /builder/ipk-${{ matrix.arch }}-${{ matrix.branch }}.tar
+          name: ipk-${{ matrix.branch }}-${{ matrix.arch }}
+          path: /builder/ipk-${{ matrix.branch }}-${{ matrix.arch }}.tar
+          if-no-files-found: error
 
       - name: Upload build logs
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: logs-${{ matrix.arch }}-${{ matrix.branch }}
-          path: /builder/logs-${{ matrix.arch }}-${{ matrix.branch }}.tar.xz
+          name: logs-${{ matrix.branch }}-${{ matrix.arch }}
+          path: ./**/logs-${{ matrix.branch }}-${{ matrix.arch }}.tar.xz
 
   gh-pages:
-    # if: ${{ false }} # disable for now
     needs: [check, build]
     permissions:
       contents: write
-    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ipk-*
 
-      - name: Merge artifacts
-        id: merge
+      - name: Prepare files
         run: |
           mkdir public
-          find . -name 'ipk-*.tar' -exec tar xvf {} -C ./public \;
+          find . -name 'ipk-*.tar' -exec tar -C ./public -xvf {} \;
 
       - name: Deploy to GH pages
-        if: steps.merge.outcome == 'success'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           user_name: 'github-actions[bot]'
@@ -191,42 +191,43 @@ jobs:
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
+        continue-on-error: true
 
   release:
     needs: [check, gh-pages]
     permissions:
       contents: write
-    continue-on-error: true
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        branch: ['21.02', '22.03']
+        branch: ['21.02', '22.03', '23.05']
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ipk-*
 
-      - name: Merge artifacts
-        id: merge
+      - name: Prepare files
+        id: zip
         env:
           BRANCH: ${{ matrix.branch }}
           DATE: ${{ needs.check.outputs.date }}
         run: |
           mkdir -p public
-          find . -name "ipk-*$BRANCH.tar" -exec tar xvf {} --wildcards '*.ipk' \;
-          find $BRANCH -mindepth 1 -type d -exec sh -c 'tar cvf ./public/${DATE}_$(basename {}).ipk.tar -C {} .' \;
-          ls -1hs public
+          find . -name "ipk-openwrt-$BRANCH-*.tar" -exec tar -xvf {} --wildcards '*.ipk' \;
+          find $BRANCH -mindepth 1 -type d -exec sh -c 'zip -0 ./public/zapret_${DATE}_$(basename {}).ipk.zip -j {} {}/*' \;
+          ls -lh ./public/*.zip
 
-      - name: Upload Nightly release
-        if: steps.merge.outcome == 'success'
+      - name: Upload assets
+        if: steps.zip.outcome == 'success'
         uses: andelf/nightly-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          prerelease: false
           tag_name: ${{ matrix.branch }}
           name: '${{ needs.check.outputs.date }} for OpenWrt ${{ matrix.branch }}'
-          prerelease: false
           body: |
             ${{ needs.check.outputs.url }}: ${{ needs.check.outputs.message }}
-          files: |
-            ./public/*.tar
+          files: ./public/*.zip
