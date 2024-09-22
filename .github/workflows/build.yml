@@ -114,23 +114,24 @@ jobs:
       - name: Build packages
         id: build
         working-directory: /builder
-        shell: bash
         env:
           DATE: ${{ needs.check.outputs.date }}
           SHA: ${{ needs.check.outputs.sha }}
           ARCH: ${{ matrix.arch }}
           BRANCH: ${{ matrix.branch }}
           SIGN_KEY: ${{ secrets.SIGN_PRIVATE_KEY }}
+        shell: bash
         run: |
           export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
-          find ${GITHUB_WORKSPACE}/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
-          cp -r ${GITHUB_WORKSPACE}/zapret/tpws ./package/zapret/tpws/
-          cp -r ${GITHUB_WORKSPACE}/zapret/nfq ./package/zapret/nfqws/
-          cp -r ${GITHUB_WORKSPACE}/zapret/mdig ./package/zapret/mdig/
-          cp -r ${GITHUB_WORKSPACE}/zapret/ip2net ./package/zapret/ip2net/
+          find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
+          cp -r $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
+          cp -r $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
+          cp -r $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
+          cp -r $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
           find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          mv feeds.conf.default feeds.conf
           sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
-              -e 's|packages.*\.git|packages https://github.com/openwrt/packages.git|' -i feeds.conf.default
+              -e 's|packages.*\.git|packages https://github.com/openwrt/packages.git|' -i feeds.conf
           ./scripts/feeds update base packages
           ./scripts/feeds install -a
           make defconfig
@@ -208,8 +209,7 @@ jobs:
         with:
           pattern: ipk-*
 
-      - name: Prepare files
-        id: zip
+      - name: Put ipk into zip
         env:
           BRANCH: ${{ matrix.branch }}
           DATE: ${{ needs.check.outputs.date }}
@@ -220,7 +220,6 @@ jobs:
           ls -lh ./public/*.zip
 
       - name: Upload assets
-        if: steps.zip.outcome == 'success'
         uses: andelf/nightly-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
