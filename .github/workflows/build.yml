@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [openwrt-21.02, openwrt-22.03, openwrt-23.05]
+        branch: [openwrt-19.07, openwrt-21.02, openwrt-22.03, openwrt-23.05]
         arch:
           - aarch64_cortex-a53
           - aarch64_cortex-a72
@@ -91,6 +91,12 @@ jobs:
           - branch: SNAPSHOT
             arch: x86_64
         exclude:
+          - branch: openwrt-19.07
+            arch: arm_cortex-a7
+          - branch: openwrt-19.07
+            arch: arm_cortex-a7_vfpv4
+          - branch: openwrt-19.07
+            arch: mips_4kec
           - branch: openwrt-21.02
             arch: arm_cortex-a7_vfpv4
     container:
@@ -103,59 +109,73 @@ jobs:
           repository: 'bol-van/zapret'
           path: zapret
 
+      - name: Apply diff from PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          wget -qO- --header="Authorization: token $GH_TOKEN" https://api.github.com/repos/cli/cli/releases/latest | grep -Po '"tag_name": "v\K.+(?=")' |\
+            xargs -I{} wget -qO- https://github.com/cli/cli/releases/download/v{}/gh_{}_linux_amd64.tar.gz | tar -xz --wildcards '*/bin/gh' --strip-components=2
+          cd zapret && ../gh pr diff 413 | git apply -
+
       - name: Setup ccache
         uses: actions/cache@v4
         with:
-          path: /builder/.ccache
+          path: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
           key: ccache-${{ matrix.arch }}-${{ matrix.branch }}-${{ github.run_id }}
           restore-keys: |
             ccache-${{ matrix.arch }}-${{ matrix.branch }}-
 
       - name: Build packages
         id: build
-        working-directory: /builder
+        working-directory: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt' || '/builder' }}
         env:
           DATE: ${{ needs.check.outputs.date }}
           SHA: ${{ needs.check.outputs.sha }}
           ARCH: ${{ matrix.arch }}
           BRANCH: ${{ matrix.branch }}
           SIGN_KEY: ${{ secrets.SIGN_PRIVATE_KEY }}
+          CCACHE_DIR: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
         shell: bash
         run: |
           export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
+
           find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
           cp -r $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
           cp -r $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
           cp -r $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
           cp -r $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
-          find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          # find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          find ./package/zapret -type f -name Makefile -exec sed '/Build\/Compile/iTARGET_CFLAGS += -Os\n' -i {} \;
+
           mv feeds.conf.default feeds.conf
           sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
               -e 's|packages.*\.git|packages https://github.com/openwrt/packages.git|' -i feeds.conf
+
           ./scripts/feeds update base packages
           ./scripts/feeds install -a
           make defconfig
           make package/{ip2net,nfqws,mdig,tpws}/compile V=s -j$(nproc) CONFIG_CCACHE=1 BUILD_LOG=1
-          ./staging_dir/host/bin/ccache --dir .ccache --max-size=10M --show-stats
           find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.ipk$" -delete
           echo "$SIGN_KEY" | base64 -d > key-build
           make package/index
-          tar -C ./bin/packages/*/base -cvf ipk-$BRANCH-$ARCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names .
+          tar -C ./bin/packages/*/base -cvf $GITHUB_WORKSPACE/ipk-$BRANCH-$ARCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names .
+          ./staging_dir/host/bin/ccache --max-size=10M --show-stats
 
       - name: Compress build logs
         if: always()
         env:
           ARCH: ${{ matrix.arch }}
           BRANCH: ${{ matrix.branch }}
+          LOGS_DIR: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/logs' || '/builder/logs' }}
         run: |
-          tar -cJvf logs-$BRANCH-$ARCH.tar.xz /builder/logs
+          tar -cJvf logs-$BRANCH-$ARCH.tar.xz $LOGS_DIR
 
       - name: Upload packages
         if: steps.build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: ipk-${{ matrix.branch }}-${{ matrix.arch }}
-          path: /builder/ipk-${{ matrix.branch }}-${{ matrix.arch }}.tar
+          path: ./**/ipk-${{ matrix.branch }}-${{ matrix.arch }}.tar
           if-no-files-found: error
 
       - name: Upload build logs
@@ -163,7 +183,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ matrix.branch }}-${{ matrix.arch }}
-          path: ./**/logs-${{ matrix.branch }}-${{ matrix.arch }}.tar.xz
+          path: ./**/logs-*.tar.xz
 
   gh-pages:
     needs: [check, build]
@@ -202,7 +222,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: ['21.02', '22.03', '23.05']
+        branch: ['19.07', '21.02', '22.03', '23.05']
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
