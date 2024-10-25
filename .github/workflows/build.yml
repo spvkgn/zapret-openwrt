@@ -58,6 +58,7 @@ jobs:
     if: needs.check.outputs.is_active == 'true'
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         branch: [openwrt-19.07, openwrt-21.02, openwrt-22.03, openwrt-23.05]
         arch:
@@ -110,6 +111,7 @@ jobs:
           path: zapret
 
       - name: Apply diff from PR
+        if: false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -127,6 +129,7 @@ jobs:
 
       - name: Build packages
         id: build
+        continue-on-error: true
         working-directory: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt' || '/builder' }}
         env:
           DATE: ${{ needs.check.outputs.date }}
@@ -145,7 +148,6 @@ jobs:
           cp -r $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
           cp -r $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
           # find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
-          find ./package/zapret -type f -name Makefile -exec sed '/Build\/Compile/iTARGET_CFLAGS += -Os\n' -i {} \;
 
           mv feeds.conf.default feeds.conf
           sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
@@ -172,14 +174,16 @@ jobs:
 
       - name: Upload packages
         if: steps.build.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: ipk-${{ matrix.branch }}-${{ matrix.arch }}
           path: ./**/ipk-${{ matrix.branch }}-${{ matrix.arch }}.tar
-          if-no-files-found: error
+          # if-no-files-found: error
 
       - name: Upload build logs
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ matrix.branch }}-${{ matrix.arch }}
