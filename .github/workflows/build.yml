@@ -3,7 +3,7 @@ name: build
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Run nightly
+    - cron: '0 6 * * *'
 
 jobs:
   check:
@@ -60,7 +60,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [openwrt-19.07, openwrt-21.02, openwrt-22.03, openwrt-23.05]
+        branch:
+          # - openwrt-19.07
+          - openwrt-21.02
+          - openwrt-22.03
+          - openwrt-23.05
         arch:
           - aarch64_cortex-a53
           - aarch64_cortex-a72
@@ -88,16 +92,16 @@ jobs:
           - mipsel_74kc
           - mipsel_mips32
           - x86_64
-        include:
-          - branch: SNAPSHOT
-            arch: x86_64
+        # include:
+        #   - branch: SNAPSHOT
+        #     arch: x86_64
         exclude:
-          - branch: openwrt-19.07
-            arch: arm_cortex-a7
-          - branch: openwrt-19.07
-            arch: arm_cortex-a7_vfpv4
-          - branch: openwrt-19.07
-            arch: mips_4kec
+          # - branch: openwrt-19.07
+          #   arch: arm_cortex-a7
+          # - branch: openwrt-19.07
+          #   arch: arm_cortex-a7_vfpv4
+          # - branch: openwrt-19.07
+          #   arch: mips_4kec
           - branch: openwrt-21.02
             arch: arm_cortex-a7_vfpv4
     container:
@@ -119,7 +123,18 @@ jobs:
             xargs -I{} wget -qO- https://github.com/cli/cli/releases/download/v{}/gh_{}_linux_amd64.tar.gz | tar -xz --wildcards '*/bin/gh' --strip-components=2
           cd zapret && ../gh pr diff 413 | git apply -
 
-      - name: Setup ccache
+      - name: Set up SDK
+        if: ${{ matrix.branch == 'openwrt-23.05' || matrix.branch == 'SNAPSHOT' }}
+        working-directory: /builder
+        shell: bash
+        run: |
+          gpg --verbose --keyserver keyserver.ubuntu.com --recv-keys 0x1D53D1877742E911 ||\
+            gpg --verbose --import <(wget -qO- 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=gpg/0x1D53D1877742E911.asc')
+          sed -r -i 's/^rm.+//' setup.sh
+          ./setup.sh
+          ls -lh
+
+      - name: Set up ccache
         uses: actions/cache@v4
         with:
           path: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
@@ -142,11 +157,11 @@ jobs:
         run: |
           export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
 
-          find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
-          cp -r $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
-          cp -r $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
-          cp -r $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
-          cp -r $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
+          find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -vr {} ./package \;
+          cp -vr $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
+          cp -vr $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
+          cp -vr $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
+          cp -vr $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
           # find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
 
           mv feeds.conf.default feeds.conf
@@ -190,7 +205,7 @@ jobs:
           path: ./**/logs-*.tar.xz
 
   gh-pages:
-    needs: [check, build]
+    needs: [ check, build ]
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -219,14 +234,18 @@ jobs:
         continue-on-error: true
 
   release:
-    needs: [check, gh-pages]
+    needs: [ check, gh-pages ]
     permissions:
       contents: write
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        branch: ['19.07', '21.02', '22.03', '23.05']
+        branch:
+          # - '19.07'
+          - '21.02'
+          - '22.03'
+          - '23.05'
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
