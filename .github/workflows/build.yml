@@ -2,13 +2,14 @@ name: build
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 6 * * *'
+  # schedule:
+  #   - cron: '0 6 * * *'
 
 jobs:
   check:
     runs-on: ubuntu-latest
     outputs:
+      tag: ${{ steps.gh.outputs.tag }}
       date: ${{ steps.gh.outputs.date }}
       sha: ${{ steps.gh.outputs.sha }}
       url: ${{ steps.gh.outputs.url }}
@@ -25,6 +26,7 @@ jobs:
           DATE=$(gh api repos/$REPO/commits/$BRANCH --jq '.commit.committer.date')
           {
             echo "date=$(date --utc -d $DATE +%Y%m%d)"
+            echo "tag=$(gh api repos/$REPO/releases/latest --jq '.tag_name')"
             echo "sha=$(gh api repos/$REPO/commits/$BRANCH --jq '.sha[0:7]')"
             echo "url=$(gh api repos/$REPO/commits/$BRANCH --jq '.html_url')"
             echo "message<<EOF"
@@ -56,6 +58,7 @@ jobs:
   build:
     needs: check
     if: needs.check.outputs.is_active == 'true'
+    name: "${{ matrix.branch }} :: ${{ matrix.arch }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -92,9 +95,9 @@ jobs:
           - mipsel_74kc
           - mipsel_mips32
           - x86_64
-        # include:
-        #   - branch: SNAPSHOT
-        #     arch: x86_64
+        include:
+          - branch: SNAPSHOT
+            arch: x86_64
         exclude:
           # - branch: openwrt-19.07
           #   arch: arm_cortex-a7
@@ -108,10 +111,11 @@ jobs:
       image: openwrt/sdk:${{ matrix.arch }}-${{ matrix.branch }}
       options: --user root
     steps:
-      - name: Checkout
+      - name: Checkout zapret
         uses: actions/checkout@v4
         with:
           repository: 'bol-van/zapret'
+          ref: ${{ needs.check.outputs.tag }}
           path: zapret
 
       - name: Apply diff from PR
@@ -147,22 +151,24 @@ jobs:
         continue-on-error: true
         working-directory: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt' || '/builder' }}
         env:
-          DATE: ${{ needs.check.outputs.date }}
-          SHA: ${{ needs.check.outputs.sha }}
+          # DATE: ${{ needs.check.outputs.date }}
+          TAG: ${{ needs.check.outputs.tag }}
+          # SHA: ${{ needs.check.outputs.sha }}
           ARCH: ${{ matrix.arch }}
           BRANCH: ${{ matrix.branch }}
           SIGN_KEY: ${{ secrets.SIGN_PRIVATE_KEY }}
           CCACHE_DIR: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
         shell: bash
         run: |
-          export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
+          # export PKG_VERSION=$(date --utc -d $DATE +%Y%m%d)
+          export PKG_VERSION=${TAG#v}
 
           find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -vr {} ./package \;
           cp -vr $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
           cp -vr $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
           cp -vr $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
           cp -vr $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
-          # find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
 
           mv feeds.conf.default feeds.conf
           sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
@@ -172,10 +178,10 @@ jobs:
           ./scripts/feeds install -a
           make defconfig
           make package/{ip2net,nfqws,mdig,tpws}/compile V=s -j$(nproc) CONFIG_CCACHE=1 BUILD_LOG=1
-          find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.ipk$" -delete
+          find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.[ai]pk$" -delete
           echo "$SIGN_KEY" | base64 -d > key-build
           make package/index
-          tar -C ./bin/packages/*/base -cvf $GITHUB_WORKSPACE/ipk-$BRANCH-$ARCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names .
+          tar -C ./bin/packages/*/base -cvf $GITHUB_WORKSPACE/pkg-$BRANCH-$ARCH.tar --transform "s|^\./|${BRANCH/openwrt-}/$ARCH/|" --show-transformed-names .
           ./staging_dir/host/bin/ccache --max-size=10M --show-stats
 
       - name: Compress build logs
@@ -192,8 +198,8 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: ipk-${{ matrix.branch }}-${{ matrix.arch }}
-          path: ./**/ipk-${{ matrix.branch }}-${{ matrix.arch }}.tar
+          name: pkg-${{ matrix.branch }}-${{ matrix.arch }}
+          path: pkg-*.tar
           # if-no-files-found: error
 
       - name: Upload build logs
@@ -202,7 +208,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ matrix.branch }}-${{ matrix.arch }}
-          path: ./**/logs-*.tar.xz
+          path: logs-*.tar.xz
 
   gh-pages:
     needs: [ check, build ]
@@ -213,12 +219,12 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: ipk-*
+          pattern: pkg-*
 
       - name: Prepare files
         run: |
           mkdir public
-          find . -name 'ipk-*.tar' -exec tar -C ./public -xvf {} \;
+          find . -name 'pkg-*.tar' -exec tar -C ./public -xvf {} \;
 
       - name: Deploy to GH pages
         uses: peaceiris/actions-gh-pages@v4
@@ -226,7 +232,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          full_commit_message: ${{ needs.check.outputs.url }}
+          full_commit_message: ${{ needs.check.outputs.tag }}
           force_orphan: true
 
       - name: Delete workflow runs
@@ -250,16 +256,16 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: ipk-*
+          pattern: pkg-*
 
-      - name: Put ipk into zip
+      - name: Put packages into zip
         env:
           BRANCH: ${{ matrix.branch }}
-          DATE: ${{ needs.check.outputs.date }}
+          TAG: ${{ needs.check.outputs.tag }}
         run: |
           mkdir -p public
-          find . -name "ipk-openwrt-$BRANCH-*.tar" -exec tar -xvf {} --wildcards '*.ipk' \;
-          find $BRANCH -mindepth 1 -type d -exec sh -c 'zip -0 ./public/zapret_${DATE}_$(basename {}).ipk.zip -j {} {}/*' \;
+          find . -name "*-openwrt-$BRANCH-*.tar" -exec tar -xvf {} --wildcards '*.*pk' \;
+          find $BRANCH -mindepth 1 -type d -exec sh -c 'zip -0 ./public/zapret_${TAG}_$(basename {}).zip -j {} {}/*' \;
           ls -lh ./public/*.zip
 
       - name: Upload assets
@@ -268,8 +274,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           prerelease: false
-          tag_name: ${{ matrix.branch }}
-          name: '${{ needs.check.outputs.date }} for OpenWrt ${{ matrix.branch }}'
+          tag_name: ${{ needs.check.outputs.tag }}-${{ matrix.branch }}
+          name: '${{ needs.check.outputs.tag }} for OpenWrt ${{ matrix.branch }}'
           body: |
-            ${{ needs.check.outputs.url }}: ${{ needs.check.outputs.message }}
+            ### zapret ${{ needs.check.outputs.tag }}
           files: ./public/*.zip
