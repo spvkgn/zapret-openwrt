@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 69
+Depends: libc
+Section: net
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 4308
+Filename: ip2net_69_arm_arm1176jzf-s_vfp.ipk
+Size: 4939
+SHA256sum: 9ea0f861c2f9f117063d11b800c951bc154ef64aec7e5c0db526f1c14a6ec8b5
+Description:  ip2net
+
+Package: mdig
+Version: 69
+Depends: libc
+Section: net
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 5036
+Filename: mdig_69_arm_arm1176jzf-s_vfp.ipk
+Size: 5662
+SHA256sum: 0c83bce5fb200297abbc2a165d3f802672c3770fc5e21a76d7e6f28135e0a5aa
+Description:  mdig
+
+Package: nfqws
+Version: 69
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 55529
+Filename: nfqws_69_arm_arm1176jzf-s_vfp.ipk
+Size: 56236
+SHA256sum: d37c8d5f0d6b1670bec51b070bb82c787a9784d850f8a9e811d49a0e03dba00d
+Description:  nfqws
+
+Package: tpws
+Version: 69
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 40804
+Filename: tpws_69_arm_arm1176jzf-s_vfp.ipk
+Size: 41402
+SHA256sum: c6934a05c0a02b65bca76c6bd8a7678bfe1c2df944879c10be50b150c51916ea
+Description:  tpws
+

@@ -1,0 +1,52 @@
+Package: ip2net
+Version: 69
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 4306
+Filename: ip2net_69_arm_mpcore.ipk
+Size: 4925
+SHA256sum: 4c7a298faffacd75b320ca4249431135d45721ccd102a04306e8054f4357df92
+Description:  ip2net
+
+Package: mdig
+Version: 69
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 5030
+Filename: mdig_69_arm_mpcore.ipk
+Size: 5639
+SHA256sum: d7e4c96a39a8cf281b532547f6f4e30a2c6dafb67be324c81b7fefaa62b7a063
+Description:  mdig
+
+Package: nfqws
+Version: 69
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 55529
+Filename: nfqws_69_arm_mpcore.ipk
+Size: 56229
+SHA256sum: c66d7a51cab67f247e69a3023c045e58f7f2b7c9983e3b8177cdef0683d92b3d
+Description:  nfqws
+
+Package: tpws
+Version: 69
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 40800
+Filename: tpws_69_arm_mpcore.ipk
+Size: 41398
+SHA256sum: 2a934c77cd4807ea66c7cb0c523fee3faa99cc9ca81c00fc08c34d7d104a2c85
+Description:  tpws
+

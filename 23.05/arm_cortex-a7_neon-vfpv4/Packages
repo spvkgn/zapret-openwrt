@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 69
+Depends: libc
+Section: net
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 4223
+Filename: ip2net_69_arm_cortex-a7_neon-vfpv4.ipk
+Size: 4873
+SHA256sum: e39ac757d135bed1561bd0ea67c1a5757e0209a992442b8f0d6de8fa649fc5b3
+Description:  ip2net
+
+Package: mdig
+Version: 69
+Depends: libc
+Section: net
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 5120
+Filename: mdig_69_arm_cortex-a7_neon-vfpv4.ipk
+Size: 5761
+SHA256sum: 255bd4f8cfc329eca08c7cccaf513981c1513c732f0193f6155e30c05e5277d2
+Description:  mdig
+
+Package: nfqws
+Version: 69
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 55380
+Filename: nfqws_69_arm_cortex-a7_neon-vfpv4.ipk
+Size: 56084
+SHA256sum: e36eeb0d943ae3376db13cb896f7f12bc0f530b9099a2f8795ea2b9f242da490
+Description:  nfqws
+
+Package: tpws
+Version: 69
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 40532
+Filename: tpws_69_arm_cortex-a7_neon-vfpv4.ipk
+Size: 41149
+SHA256sum: 4f86d97be65218707e5767c4ec60b13fdc40ed03d4797108df7a1fc546d872f7
+Description:  tpws
+
