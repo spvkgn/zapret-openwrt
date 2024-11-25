@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 69.3
+Depends: libc
+Section: net
+Architecture: arm_cortex-a5_vfpv4
+Installed-Size: 4370
+Filename: ip2net_69.3_arm_cortex-a5_vfpv4.ipk
+Size: 5017
+SHA256sum: 9390546df8bf199472d03c7938e4040cb2ad525cb2cd658f79f6147a27bc9190
+Description:  ip2net
+
+Package: mdig
+Version: 69.3
+Depends: libc
+Section: net
+Architecture: arm_cortex-a5_vfpv4
+Installed-Size: 5133
+Filename: mdig_69.3_arm_cortex-a5_vfpv4.ipk
+Size: 5780
+SHA256sum: 07eff16fcd2b1cb2d4f266f75e4516ffaa759f8107b855fd46a73ae3a05837e5
+Description:  mdig
+
+Package: nfqws
+Version: 69.3
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: arm_cortex-a5_vfpv4
+Installed-Size: 53321
+Filename: nfqws_69.3_arm_cortex-a5_vfpv4.ipk
+Size: 54100
+SHA256sum: 2162ac77d372960be90795b84ded65189077ff8d71e6f8228259af2975af7313
+Description:  nfqws
+
+Package: tpws
+Version: 69.3
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_cortex-a5_vfpv4
+Installed-Size: 40799
+Filename: tpws_69.3_arm_cortex-a5_vfpv4.ipk
+Size: 41408
+SHA256sum: 2b0d0db686fa2e5b1d272af9b3afc603a8d82e8c2d5fe0c055f576655e662a33
+Description:  tpws
+

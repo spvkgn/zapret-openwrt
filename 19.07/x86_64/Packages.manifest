@@ -1,0 +1,52 @@
+Package: ip2net
+Version: 69.3
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+Architecture: x86_64
+Installed-Size: 4738
+Filename: ip2net_69.3_x86_64.ipk
+Size: 5372
+SHA256sum: c679847ebbda7949989de6b8419d7d3c7e99d66504e1ec8f5cf7c338b718afeb
+Description:  ip2net
+
+Package: mdig
+Version: 69.3
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+Architecture: x86_64
+Installed-Size: 5698
+Filename: mdig_69.3_x86_64.ipk
+Size: 6312
+SHA256sum: fb491b2e7ffbf5a5470914a0c7e3ea2c732bdfc13035239cbdce72c14cc73f36
+Description:  mdig
+
+Package: nfqws
+Version: 69.3
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+Architecture: x86_64
+Installed-Size: 57045
+Filename: nfqws_69.3_x86_64.ipk
+Size: 57655
+SHA256sum: d76829cb9f0f65ee45ca5566945ba39d3272bd7b113afb39e6593054714f7ad4
+Description:  nfqws
+
+Package: tpws
+Version: 69.3
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+Architecture: x86_64
+Installed-Size: 43176
+Filename: tpws_69.3_x86_64.ipk
+Size: 43684
+SHA256sum: 8d58636e1492151d68cf5e8323ca173e97b0f70a0860c52fdaa09d6d1a33c75d
+Description:  tpws
+
