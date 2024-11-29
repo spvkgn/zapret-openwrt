@@ -11,8 +11,6 @@ on:
         options:
         - release
         - development
-  # schedule:
-  #   - cron: '0 6 * * *'
 
 env:
   REPO: 'bol-van/zapret'
@@ -123,6 +121,9 @@ jobs:
     container:
       image: openwrt/sdk:${{ matrix.arch }}-${{ matrix.branch }}
       options: --user root
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+    defaults: { run: { shell: bash } }
     steps:
       - name: Checkout zapret
         uses: actions/checkout@v4
@@ -131,28 +132,21 @@ jobs:
           ref: ${{ inputs.build_mode == 'release' && needs.check.outputs.tag || null }}
           path: zapret
 
-      - name: Set up SDK
+      - name: Setup SDK
         if: matrix.branch == 'openwrt-23.05' || matrix.branch == 'SNAPSHOT'
         working-directory: /builder
-        shell: bash
-        run: |
-          gpg --verbose --keyserver keyserver.ubuntu.com --recv-keys 0x1D53D1877742E911 ||\
-            gpg --verbose --import <(wget -qO- 'https://git.openwrt.org/?p=keyring.git;a=blob_plain;f=gpg/0x1D53D1877742E911.asc')
-          sed -r -i 's/^rm.+//' setup.sh
-          ./setup.sh
-          ls -lh
+        run: HOME=/builder ./setup.sh
 
-      - name: Set up ccache
+      - name: Setup ccache
         uses: actions/cache@v4
         with:
           path: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
           key: ccache-${{ matrix.arch }}-${{ matrix.branch }}-${{ github.run_id }}
-          restore-keys: |
-            ccache-${{ matrix.arch }}-${{ matrix.branch }}-
+          restore-keys: ccache-${{ matrix.arch }}-${{ matrix.branch }}-
 
       - name: Build packages
         id: build
-        continue-on-error: true
+        # continue-on-error: true
         working-directory: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt' || '/builder' }}
         env:
           DATE: ${{ needs.check.outputs.date }}
@@ -161,20 +155,19 @@ jobs:
           BRANCH: ${{ matrix.branch }}
           SIGN_KEY: ${{ secrets.SIGN_PRIVATE_KEY }}
           CCACHE_DIR: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/.ccache' || '/builder/.ccache' }}
-        shell: bash
         run: |
           if [[ ${{ inputs.build_mode }} == 'release' ]]; then
-            export PKG_VERSION=${TAG#v}
+            VERSION=${TAG#v}
           else
-            export PKG_VERSION=${TAG#v}.$(date --utc -d $DATE +%Y%m%d)
+            VERSION=${TAG#v}.$(date --utc -d $DATE +%Y%m%d)
           fi
 
-          find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -vr {} ./package \;
-          cp -vr $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
-          cp -vr $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
-          cp -vr $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
-          cp -vr $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
-          find ./package/zapret -type f -name Makefile -exec sed 's/PKG_RELEASE.*//g' -i {} \;
+          find $GITHUB_WORKSPACE/zapret -type d -path '*/package/zapret' -exec cp -r {} ./package \;
+          cp -r $GITHUB_WORKSPACE/zapret/tpws ./package/zapret/tpws/
+          cp -r $GITHUB_WORKSPACE/zapret/nfq ./package/zapret/nfqws/
+          cp -r $GITHUB_WORKSPACE/zapret/mdig ./package/zapret/mdig/
+          cp -r $GITHUB_WORKSPACE/zapret/ip2net ./package/zapret/ip2net/
+          find ./package/zapret -type f -name Makefile -exec sed "s/PKG_RELEASE.*/PKG_VERSION:=$VERSION/" -i {} \;
 
           mv feeds.conf.default feeds.conf
           sed -e 's|base.*\.git|base https://github.com/openwrt/openwrt.git|' \
@@ -183,7 +176,7 @@ jobs:
           ./scripts/feeds update base packages
           ./scripts/feeds install -a
           make defconfig
-          make package/{ip2net,nfqws,mdig,tpws}/compile V=s -j$(nproc) CONFIG_CCACHE=1 BUILD_LOG=1
+          make package/{ip2net,nfqws,mdig,tpws}/compile -j$(nproc) CONFIG_CCACHE=1 BUILD_LOG=1
           find ./bin/packages/*/base -type f ! -regex ".*\(ip2net\|nfqws\|mdig\|tpws\).*\.[ai]pk$" -delete
           echo "$SIGN_KEY" | base64 -d > key-build
           make package/index
@@ -206,7 +199,7 @@ jobs:
         with:
           name: pkg-${{ matrix.branch }}-${{ matrix.arch }}
           path: pkg-*.tar
-          # if-no-files-found: error
+          if-no-files-found: error
 
       - name: Upload build logs
         if: always()
@@ -241,10 +234,6 @@ jobs:
           user_email: 'github-actions[bot]@users.noreply.github.com'
           full_commit_message: ${{ needs.check.outputs.tag }}
           force_orphan: true
-
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
-        continue-on-error: true
 
   release:
     if: inputs.build_mode == 'release'
@@ -286,5 +275,5 @@ jobs:
           name: '${{ needs.check.outputs.tag }} for OpenWrt ${{ matrix.branch }}'
           body: |
             ### zapret ${{ needs.check.outputs.tag }}
-          target_commitish : gh-pages
+          target_commitish: gh-pages
           files: ./public/*.zip
