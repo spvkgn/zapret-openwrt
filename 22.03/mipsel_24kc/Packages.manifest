@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 69.4
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: mipsel_24kc
+Installed-Size: 4992
+Filename: ip2net_69.4_mipsel_24kc.ipk
+Size: 5629
+SHA256sum: aaa353c1e6915514f2e9b99aee7564eca1579bf9220aad53b011dc9002375a0b
+Description:  ip2net
+
+Package: mdig
+Version: 69.4
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: mipsel_24kc
+Installed-Size: 5542
+Filename: mdig_69.4_mipsel_24kc.ipk
+Size: 6183
+SHA256sum: 7c8502e8782cf95e2c36378de4a22735bc21655e0741ee3cea05630fa9b2fbd2
+Description:  mdig
+
+Package: nfqws
+Version: 69.4
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: mipsel_24kc
+Installed-Size: 56761
+Filename: nfqws_69.4_mipsel_24kc.ipk
+Size: 57435
+SHA256sum: c07f1e9073e39d34c3e343ca82adae0666fd9217641c017c98003ab04fe8fe0e
+Description:  nfqws
+
+Package: tpws
+Version: 69.4
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: mipsel_24kc
+Installed-Size: 41990
+Filename: tpws_69.4_mipsel_24kc.ipk
+Size: 42596
+SHA256sum: 244c2da6358127009e5bdedfb1bb5e94d8d95d8b21a298228d7a892764c76c4c
+Description:  tpws
+
