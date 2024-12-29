@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 69.9
+Depends: libc
+Section: net
+Architecture: aarch64_cortex-a53
+Installed-Size: 4906
+Filename: ip2net_69.9_aarch64_cortex-a53.ipk
+Size: 5416
+SHA256sum: cc8ce4e1bc4d0b0d667ca885f469857335800241e096942077ae23bc1026c898
+Description:  ip2net
+
+Package: mdig
+Version: 69.9
+Depends: libc
+Section: net
+Architecture: aarch64_cortex-a53
+Installed-Size: 5667
+Filename: mdig_69.9_aarch64_cortex-a53.ipk
+Size: 6288
+SHA256sum: 9ca06aa9924da8a4f84ce429f1a44f305360bb168021722297b1f3c069fa9be4
+Description:  mdig
+
+Package: nfqws
+Version: 69.9
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: aarch64_cortex-a53
+Installed-Size: 57947
+Filename: nfqws_69.9_aarch64_cortex-a53.ipk
+Size: 58663
+SHA256sum: 3b61846ea127165015364339e091d5f46a4e65b4a1b52cdab705ed02c13640ef
+Description:  nfqws
+
+Package: tpws
+Version: 69.9
+Depends: libc, zlib, libcap
+Section: net
+Architecture: aarch64_cortex-a53
+Installed-Size: 43836
+Filename: tpws_69.9_aarch64_cortex-a53.ipk
+Size: 44207
+SHA256sum: 270bd3011e3d9a19cc479d1b7dbfc36c3946e0478f18f6089920708d0a9bab06
+Description:  tpws
+

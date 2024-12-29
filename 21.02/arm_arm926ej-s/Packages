@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 69.9
+Depends: libc
+Section: net
+Architecture: arm_arm926ej-s
+Installed-Size: 4416
+Filename: ip2net_69.9_arm_arm926ej-s.ipk
+Size: 5056
+SHA256sum: 28ce86f91bd9262a351f112f777a1162d4ef020c47de406235cad913fb38cfcb
+Description:  ip2net
+
+Package: mdig
+Version: 69.9
+Depends: libc
+Section: net
+Architecture: arm_arm926ej-s
+Installed-Size: 5125
+Filename: mdig_69.9_arm_arm926ej-s.ipk
+Size: 5764
+SHA256sum: c3cafff79082a97c422574b61f568569486ff9738d3b8956ae2ed8dc148daf7d
+Description:  mdig
+
+Package: nfqws
+Version: 69.9
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: arm_arm926ej-s
+Installed-Size: 54253
+Filename: nfqws_69.9_arm_arm926ej-s.ipk
+Size: 55020
+SHA256sum: 0383a36f9a4d6467a673359f2117696832b4567129f780f86706e8f0dd356330
+Description:  nfqws
+
+Package: tpws
+Version: 69.9
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_arm926ej-s
+Installed-Size: 41126
+Filename: tpws_69.9_arm_arm926ej-s.ipk
+Size: 41759
+SHA256sum: 0224cbdff84f125ee1c673e129f6bef110751df392ea4b17c54aaf7e0f788b35
+Description:  tpws
+
