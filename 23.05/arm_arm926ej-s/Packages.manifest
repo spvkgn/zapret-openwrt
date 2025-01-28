@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 70
+Depends: libc
+Source: feeds/base/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1737735439
+Architecture: arm_arm926ej-s
+Installed-Size: 4418
+Filename: ip2net_70_arm_arm926ej-s.ipk
+Size: 5069
+SHA256sum: 9c085eb7542fc2980cbe92b9ef0ba968a3af21fca7c54bf73a6c668f44d52693
+Description:  ip2net
+
+Package: mdig
+Version: 70
+Depends: libc
+Source: feeds/base/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1737735439
+Architecture: arm_arm926ej-s
+Installed-Size: 5245
+Filename: mdig_70_arm_arm926ej-s.ipk
+Size: 5890
+SHA256sum: ae626e0fb3b2877339e9252304017d7dee244b0d0a8a03302c807646b8900ae0
+Description:  mdig
+
+Package: nfqws
+Version: 70
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: feeds/base/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1737735439
+Architecture: arm_arm926ej-s
+Installed-Size: 56652
+Filename: nfqws_70_arm_arm926ej-s.ipk
+Size: 57348
+SHA256sum: 629000a32b32c0eade41c346b2749f348fb2b48fd2bbfb9be55fe2b32bf62edd
+Description:  nfqws
+
+Package: tpws
+Version: 70
+Depends: libc, zlib, libcap
+Source: feeds/base/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1737735439
+Architecture: arm_arm926ej-s
+Installed-Size: 41632
+Filename: tpws_70_arm_arm926ej-s.ipk
+Size: 42316
+SHA256sum: b870bf6ed35098bfe3052cb06ffdb2d2352744978c1b0c796aa9f12decb5d9b1
+Description:  tpws
+

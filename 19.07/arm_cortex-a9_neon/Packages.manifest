@@ -1,0 +1,52 @@
+Package: ip2net
+Version: 70
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+Architecture: arm_cortex-a9_neon
+Installed-Size: 4382
+Filename: ip2net_70_arm_cortex-a9_neon.ipk
+Size: 5008
+SHA256sum: fc8b3cd654a209399907b3b2059c05274982730ad1acad1696404ce6536eeb7b
+Description:  ip2net
+
+Package: mdig
+Version: 70
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+Architecture: arm_cortex-a9_neon
+Installed-Size: 5137
+Filename: mdig_70_arm_cortex-a9_neon.ipk
+Size: 5742
+SHA256sum: 7c1824fb59dd644ed43c81432996046c56b26fad3ba1998b54e217ecfea3abb3
+Description:  mdig
+
+Package: nfqws
+Version: 70
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+Architecture: arm_cortex-a9_neon
+Installed-Size: 56358
+Filename: nfqws_70_arm_cortex-a9_neon.ipk
+Size: 56922
+SHA256sum: db608532bad2bbb5cb64e8ce60373ba0f4a06cf6b4b573bd2ce821670a6c7c0a
+Description:  nfqws
+
+Package: tpws
+Version: 70
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+Architecture: arm_cortex-a9_neon
+Installed-Size: 41331
+Filename: tpws_70_arm_cortex-a9_neon.ipk
+Size: 42014
+SHA256sum: 13e5548e7aae89aac4e00ccb084f6fd11e7b8f9b013d0ef36ebf54d0e894d747
+Description:  tpws
+

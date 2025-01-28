@@ -1,0 +1,52 @@
+Package: ip2net
+Version: 70
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+Architecture: mips64_octeonplus
+Installed-Size: 5129
+Filename: ip2net_70_mips64_octeonplus.ipk
+Size: 5765
+SHA256sum: 735d9c9cda1f060a1e5c5de4e8ac3506b44c1f18d01f24ea3d00dceccbce1a79
+Description:  ip2net
+
+Package: mdig
+Version: 70
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+Architecture: mips64_octeonplus
+Installed-Size: 5869
+Filename: mdig_70_mips64_octeonplus.ipk
+Size: 6518
+SHA256sum: bba969e5509f953da0413b96a13e2fda38ff638a015eb91c7c8a07201c0adf4a
+Description:  mdig
+
+Package: nfqws
+Version: 70
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+Architecture: mips64_octeonplus
+Installed-Size: 61549
+Filename: nfqws_70_mips64_octeonplus.ipk
+Size: 62176
+SHA256sum: fbe5214026cb502ef752ab253e154b3c34f91811acbfde79ac07d3a6b40f1e62
+Description:  nfqws
+
+Package: tpws
+Version: 70
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+Architecture: mips64_octeonplus
+Installed-Size: 44127
+Filename: tpws_70_mips64_octeonplus.ipk
+Size: 44619
+SHA256sum: d556e94bbc5ef97e4d8b8f1301c7e67099799382967dcc63010c41193a2cbf80
+Description:  tpws
+
