@@ -67,7 +67,6 @@ jobs:
     name: "${{ matrix.branch }} :: ${{ matrix.arch }}"
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         isRelease:
           - ${{ inputs.build_mode == 'release' }}
@@ -76,9 +75,11 @@ jobs:
           - openwrt-21.02
           - openwrt-22.03
           - openwrt-23.05
+          - openwrt-24.10
         arch:
           - aarch64_cortex-a53
           - aarch64_cortex-a72
+          - aarch64_cortex-a76
           - aarch64_generic
           - arm_arm1176jzf-s_vfp
           - arm_arm926ej-s
@@ -111,13 +112,24 @@ jobs:
             arch: arm_cortex-a7_vfpv4
           - branch: openwrt-19.07
             arch: mips_4kec
+          - branch: openwrt-19.07
+            arch: aarch64_cortex-a76
           - branch: openwrt-21.02
             arch: arm_cortex-a7_vfpv4
+          - branch: openwrt-21.02
+            arch: aarch64_cortex-a76
+          - branch: openwrt-22.03
+            arch: aarch64_cortex-a76
+          - branch: openwrt-23.05
+            arch: aarch64_cortex-a76
+          - branch: openwrt-24.10
+            arch: arm_mpcore
         include:
           - branch: SNAPSHOT
             arch: x86_64
           - branch: openwrt-21.02
             arch: mipsel_24kc
+      # fail-fast: false
     container:
       image: openwrt/sdk:${{ matrix.arch }}-${{ matrix.branch }}
       options: --user root
@@ -133,9 +145,11 @@ jobs:
           path: zapret
 
       - name: Setup SDK
-        if: matrix.branch == 'openwrt-23.05' || matrix.branch == 'SNAPSHOT'
+        if: matrix.branch == 'openwrt-23.05' || matrix.branch == 'openwrt-24.10' || matrix.branch == 'SNAPSHOT'
         working-directory: /builder
-        run: HOME=/builder ./setup.sh
+        run: |
+          HOME=/builder ./setup.sh
+          apt update -qq ; apt install -y python3-cryptography
 
       - name: Setup ccache
         uses: actions/cache@v4
@@ -189,8 +203,7 @@ jobs:
           ARCH: ${{ matrix.arch }}
           BRANCH: ${{ matrix.branch }}
           LOGS_DIR: ${{ matrix.branch == 'openwrt-19.07' && '/home/build/openwrt/logs' || '/builder/logs' }}
-        run: |
-          tar -cJvf logs-$BRANCH-$ARCH.tar.xz $LOGS_DIR
+        run: tar -cJvf logs-$BRANCH-$ARCH.tar.xz $LOGS_DIR
 
       - name: Upload packages
         if: steps.build.outcome == 'success'
@@ -249,6 +262,7 @@ jobs:
           - '21.02'
           - '22.03'
           - '23.05'
+          - '24.10'
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
