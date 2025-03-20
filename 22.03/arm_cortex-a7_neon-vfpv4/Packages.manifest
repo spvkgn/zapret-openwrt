@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 70.4
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 4324
+Filename: ip2net_70.4_arm_cortex-a7_neon-vfpv4.ipk
+Size: 4974
+SHA256sum: 19866eb0dc082fef0457da5cb48beca2aa255f83624f39d994fbc0dadc42de8d
+Description:  ip2net
+
+Package: mdig
+Version: 70.4
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 5170
+Filename: mdig_70.4_arm_cortex-a7_neon-vfpv4.ipk
+Size: 5820
+SHA256sum: 66b051185d766d0cc852a11687cdf4d0ea03e434c7f7928ee94f58a3e5018922
+Description:  mdig
+
+Package: nfqws
+Version: 70.4
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 55934
+Filename: nfqws_70.4_arm_cortex-a7_neon-vfpv4.ipk
+Size: 56596
+SHA256sum: 3163f3f5bf00503e3bb851dadea1de8ce1817158c9e0222052b82b974d1f3d9b
+Description:  nfqws
+
+Package: tpws
+Version: 70.4
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a7_neon-vfpv4
+Installed-Size: 41791
+Filename: tpws_70.4_arm_cortex-a7_neon-vfpv4.ipk
+Size: 42417
+SHA256sum: 990a1175becfa91454f1b804cce328bca1518a506b8094455f3b3be3ff6c5f18
+Description:  tpws
+
