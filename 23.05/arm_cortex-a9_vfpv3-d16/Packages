@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 70.6
+Depends: libc
+Section: net
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 4380
+Filename: ip2net_70.6_arm_cortex-a9_vfpv3-d16.ipk
+Size: 5027
+SHA256sum: 21dd4a714decea439fda2aa487b87aa2e931a0d62739da8985b9c8167ce6df83
+Description:  ip2net
+
+Package: mdig
+Version: 70.6
+Depends: libc
+Section: net
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 5213
+Filename: mdig_70.6_arm_cortex-a9_vfpv3-d16.ipk
+Size: 5848
+SHA256sum: d1c606d20eb7a8f937b033480fecbc0fb2ed8e9fc6dc8b8bac214013bd008776
+Description:  mdig
+
+Package: nfqws
+Version: 70.6
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 58729
+Filename: nfqws_70.6_arm_cortex-a9_vfpv3-d16.ipk
+Size: 59510
+SHA256sum: c7230021b6a920d887a1d320bd01d16fecf7dd171003580d8a75c47607c91115
+Description:  nfqws
+
+Package: tpws
+Version: 70.6
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_cortex-a9_vfpv3-d16
+Installed-Size: 42134
+Filename: tpws_70.6_arm_cortex-a9_vfpv3-d16.ipk
+Size: 42820
+SHA256sum: a614f2d3d3f7291ff0b22687cce9b8dc0be0704e962cf083d85ff7aff92b71ba
+Description:  tpws
+

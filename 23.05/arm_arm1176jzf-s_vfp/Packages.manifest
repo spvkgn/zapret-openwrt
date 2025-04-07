@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 70.6
+Depends: libc
+Source: feeds/base/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1743422240
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 4384
+Filename: ip2net_70.6_arm_arm1176jzf-s_vfp.ipk
+Size: 5036
+SHA256sum: 5eb277cdc2c1a94abbf7dbb77f19ff03ee4533528f7c1f13cfb474a4bf758ea2
+Description:  ip2net
+
+Package: mdig
+Version: 70.6
+Depends: libc
+Source: feeds/base/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1743422240
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 5226
+Filename: mdig_70.6_arm_arm1176jzf-s_vfp.ipk
+Size: 5879
+SHA256sum: 3ed893687c1fc3362fb44933b0c0f966ea7941b59ee1f4bbfe367a23c1d563d0
+Description:  mdig
+
+Package: nfqws
+Version: 70.6
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: feeds/base/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1743422240
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 58839
+Filename: nfqws_70.6_arm_arm1176jzf-s_vfp.ipk
+Size: 59632
+SHA256sum: 56f857f1b7976df3ae609284cdb5ab142e59635f6f8364364685dba2563d9ba0
+Description:  nfqws
+
+Package: tpws
+Version: 70.6
+Depends: libc, zlib, libcap
+Source: feeds/base/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1743422240
+Architecture: arm_arm1176jzf-s_vfp
+Installed-Size: 42231
+Filename: tpws_70.6_arm_arm1176jzf-s_vfp.ipk
+Size: 42832
+SHA256sum: 1a0bb8784800beaff8e6e31e4f6c580ab4e39b7b4b8d29b9eae571c31c6bc0ef
+Description:  tpws
+
