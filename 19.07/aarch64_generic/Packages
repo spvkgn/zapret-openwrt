@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 71
+Depends: libc
+Section: net
+Architecture: aarch64_generic
+Installed-Size: 4395
+Filename: ip2net_71_aarch64_generic.ipk
+Size: 5008
+SHA256sum: 7856eb3a98cd21d9c06833ebd6849e3a98796e341538b7661cc7d4a08929f2a3
+Description:  ip2net
+
+Package: mdig
+Version: 71
+Depends: libc
+Section: net
+Architecture: aarch64_generic
+Installed-Size: 5285
+Filename: mdig_71_aarch64_generic.ipk
+Size: 5918
+SHA256sum: 19703b112cb0cf977d1981ca920fdf63706c5c9c74ff134c144c3735d589189d
+Description:  mdig
+
+Package: nfqws
+Version: 71
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Section: net
+Architecture: aarch64_generic
+Installed-Size: 65602
+Filename: nfqws_71_aarch64_generic.ipk
+Size: 66308
+SHA256sum: cf39624e83134bc668837ab93e367da6cd76813261056572df4ce4746cd9f03a
+Description:  nfqws
+
+Package: tpws
+Version: 71
+Depends: libc, zlib, libcap
+Section: net
+Architecture: aarch64_generic
+Installed-Size: 45369
+Filename: tpws_71_aarch64_generic.ipk
+Size: 45973
+SHA256sum: 70f9930796e7c2f7773b08fd41ec1ef75d2386bde390a221836878934a61e607
+Description:  tpws
+

@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 71
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1682629699
+Architecture: aarch64_generic
+Installed-Size: 4709
+Filename: ip2net_71_aarch64_generic.ipk
+Size: 5357
+SHA256sum: fa1bfe02efcb926b4ec94d66a15e0a42057897eb016b7cc80de051ea45a85e32
+Description:  ip2net
+
+Package: mdig
+Version: 71
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1682629699
+Architecture: aarch64_generic
+Installed-Size: 5595
+Filename: mdig_71_aarch64_generic.ipk
+Size: 6238
+SHA256sum: 15cd018697831e198de7be6ce863e145c15d3f10bf471e9dcd61684c57d2d7d0
+Description:  mdig
+
+Package: nfqws
+Version: 71
+Depends: libc, libnetfilter-queue1, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1682629699
+Architecture: aarch64_generic
+Installed-Size: 68700
+Filename: nfqws_71_aarch64_generic.ipk
+Size: 69410
+SHA256sum: 0423e36da08251bc531723afb20dc91b69fcf5b86c9d62a73564eca0ea82b610
+Description:  nfqws
+
+Package: tpws
+Version: 71
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1682629699
+Architecture: aarch64_generic
+Installed-Size: 48162
+Filename: tpws_71_aarch64_generic.ipk
+Size: 48818
+SHA256sum: f38591fb19d30f230ade431a99ebf1633324a5b9d713312db5fd663db0925f9a
+Description:  tpws
+
