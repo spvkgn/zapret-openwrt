@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "architecture": "arm_arm926ej-s",
+  "packages": {
+    "ip2net": "71.1.1",
+    "mdig": "71.1.1",
+    "nfqws": "71.1.1",
+    "tpws": "71.1.1"
+  }
+}

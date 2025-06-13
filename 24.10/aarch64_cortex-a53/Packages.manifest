@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 71.1.1
+Depends: libc
+Source: feeds/base/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1749731634
+Architecture: aarch64_cortex-a53
+Installed-Size: 71680
+Filename: ip2net_71.1.1_aarch64_cortex-a53.ipk
+Size: 5389
+SHA256sum: a20e0b949ebc0d361bb53aa1c1b394ff28a98ab1aab7775d968fefa226d552f1
+Description:  ip2net
+
+Package: mdig
+Version: 71.1.1
+Depends: libc
+Source: feeds/base/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1749731634
+Architecture: aarch64_cortex-a53
+Installed-Size: 71680
+Filename: mdig_71.1.1_aarch64_cortex-a53.ipk
+Size: 6286
+SHA256sum: 4ef2548962bf04ba090ac858444950a3e09ec60caa3be3f162c508f3b36feb0c
+Description:  mdig
+
+Package: nfqws
+Version: 71.1.1
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Source: feeds/base/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1749731634
+Architecture: aarch64_cortex-a53
+Installed-Size: 204800
+Filename: nfqws_71.1.1_aarch64_cortex-a53.ipk
+Size: 71838
+SHA256sum: 5a6ed812ed3a327d6999f96a29510c32ad56408054aac1b273ce562b0dfc5d71
+Description:  nfqws
+
+Package: tpws
+Version: 71.1.1
+Depends: libc, zlib, libcap
+Source: feeds/base/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1749731634
+Architecture: aarch64_cortex-a53
+Installed-Size: 143360
+Filename: tpws_71.1.1_aarch64_cortex-a53.ipk
+Size: 48998
+SHA256sum: 885bd15fcd38cd3d60caa76221e0603dc52361ca10c9766e9ee79cea04e3b9ec
+Description:  tpws
+

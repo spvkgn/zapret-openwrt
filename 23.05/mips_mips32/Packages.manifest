@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 71.1.1
+Depends: libc
+Source: feeds/base/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1749660196
+Architecture: mips_mips32
+Installed-Size: 4753
+Filename: ip2net_71.1.1_mips_mips32.ipk
+Size: 5389
+SHA256sum: 62fe24e8d9af7d8d5752e3f29193c6a208d38c4147c52ad566c37f25e725ee81
+Description:  ip2net
+
+Package: mdig
+Version: 71.1.1
+Depends: libc
+Source: feeds/base/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1749660196
+Architecture: mips_mips32
+Installed-Size: 5372
+Filename: mdig_71.1.1_mips_mips32.ipk
+Size: 6038
+SHA256sum: 6d57ef667b9e6f0a5162c2c92d6a8f808f0e2462dcfefaa372c9e50d817bbc1a
+Description:  mdig
+
+Package: nfqws
+Version: 71.1.1
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Source: feeds/base/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1749660196
+Architecture: mips_mips32
+Installed-Size: 71222
+Filename: nfqws_71.1.1_mips_mips32.ipk
+Size: 71619
+SHA256sum: 7bfbefb0a6d844cf88f31b41955e92260414f656486041f6caf1c6ee1dcc0cd8
+Description:  nfqws
+
+Package: tpws
+Version: 71.1.1
+Depends: libc, zlib, libcap
+Source: feeds/base/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1749660196
+Architecture: mips_mips32
+Installed-Size: 47044
+Filename: tpws_71.1.1_mips_mips32.ipk
+Size: 47214
+SHA256sum: 0fee321d5765c2b03ad001e33aa7c3e7fd824a0d724b2afee6c6a51d91b06871
+Description:  tpws
+
