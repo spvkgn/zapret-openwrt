@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 71.2
+Depends: libc
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 4351
+Filename: ip2net_71.2_arm_mpcore.ipk
+Size: 4971
+SHA256sum: dfc0b942bf31635f1b077ad4e3396e29476f3bbb6f0143f5b2b8f56a9b51f31e
+Description:  ip2net
+
+Package: mdig
+Version: 71.2
+Depends: libc
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 5142
+Filename: mdig_71.2_arm_mpcore.ipk
+Size: 5743
+SHA256sum: d4adc0bb084f70f6f5fe930d73addf0f25fda456d8464fbdc71171dfc5f407a7
+Description:  mdig
+
+Package: nfqws
+Version: 71.2
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 68501
+Filename: nfqws_71.2_arm_mpcore.ipk
+Size: 69152
+SHA256sum: cb5ef7aee4e65d382c8f478677e55793adb9c6a9d62f16fc102226ea65a40627
+Description:  nfqws
+
+Package: tpws
+Version: 71.2
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_mpcore
+Installed-Size: 45757
+Filename: tpws_71.2_arm_mpcore.ipk
+Size: 46343
+SHA256sum: 5bdd45841ddd887afb086ff407bd785ffe07033fd3a5d1144086b0a34e28e09c
+Description:  tpws
+
