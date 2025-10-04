@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 71.4
+Depends: libc
+Source: feeds/base/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1757656254
+Architecture: arm_xscale
+Installed-Size: 4429
+Filename: ip2net_71.4_arm_xscale.ipk
+Size: 5076
+SHA256sum: 39c51fff7f3fcce058ab9206df27d59058124c3a7b968280d758c47275609e5f
+Description:  ip2net
+
+Package: mdig
+Version: 71.4
+Depends: libc
+Source: feeds/base/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1757656254
+Architecture: arm_xscale
+Installed-Size: 5255
+Filename: mdig_71.4_arm_xscale.ipk
+Size: 5897
+SHA256sum: dfc8c35ca6f3b437d84c32b3b8539a10e73596b4ddae8f8144abdddc5a183fd3
+Description:  mdig
+
+Package: nfqws
+Version: 71.4
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Source: feeds/base/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1757656254
+Architecture: arm_xscale
+Installed-Size: 69934
+Filename: nfqws_71.4_arm_xscale.ipk
+Size: 70715
+SHA256sum: 534ef03da0175cc3cb5f2b387c5e343ce88ac73c49af505de5caeacfdb33f871
+Description:  nfqws
+
+Package: tpws
+Version: 71.4
+Depends: libc, zlib, libcap
+Source: feeds/base/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1757656254
+Architecture: arm_xscale
+Installed-Size: 46595
+Filename: tpws_71.4_arm_xscale.ipk
+Size: 47217
+SHA256sum: 5e80e4f13eace1d2ac99df5b9ce027a78bc2bc9711a5313814b13dbb31518c0b
+Description:  tpws
+

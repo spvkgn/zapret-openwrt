@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 71.4
+Depends: libc
+Section: net
+Architecture: arm_xscale
+Installed-Size: 4388
+Filename: ip2net_71.4_arm_xscale.ipk
+Size: 5031
+SHA256sum: 7fba4d50bd6852cf0c394c52add9c5ccbd23d4165f88e10cdb218db47fb27ffb
+Description:  ip2net
+
+Package: mdig
+Version: 71.4
+Depends: libc
+Section: net
+Architecture: arm_xscale
+Installed-Size: 5137
+Filename: mdig_71.4_arm_xscale.ipk
+Size: 5779
+SHA256sum: 959da933b21591ff7cc5d59eee8949ce6f129b81213e059512c92cbd62ecd9f2
+Description:  mdig
+
+Package: nfqws
+Version: 71.4
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: arm_xscale
+Installed-Size: 68815
+Filename: nfqws_71.4_arm_xscale.ipk
+Size: 69546
+SHA256sum: 3d1fbf3b8233510a4b1e1a3e94f5cf71de01483f18f469ea70db21999a87e34e
+Description:  nfqws
+
+Package: tpws
+Version: 71.4
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_xscale
+Installed-Size: 46160
+Filename: tpws_71.4_arm_xscale.ipk
+Size: 46720
+SHA256sum: 02a0a49daa72ff6d4a80a8386d27dd0b585d192b44c02e24f43972b3ca17689c
+Description:  tpws
+

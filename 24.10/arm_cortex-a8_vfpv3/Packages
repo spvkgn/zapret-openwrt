@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 71.4
+Depends: libc
+Section: net
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 20480
+Filename: ip2net_71.4_arm_cortex-a8_vfpv3.ipk
+Size: 5083
+SHA256sum: dd26d236b692f5880a7fe47d45d3d376b5efd09ff32000c8e4a74e4ea07d1c79
+Description:  ip2net
+
+Package: mdig
+Version: 71.4
+Depends: libc
+Section: net
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 20480
+Filename: mdig_71.4_arm_cortex-a8_vfpv3.ipk
+Size: 5819
+SHA256sum: 8354e928799cdbd889439d543f3f5a6f893418a74406dd63c6d8ef44bc053154
+Description:  mdig
+
+Package: nfqws
+Version: 71.4
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 143360
+Filename: nfqws_71.4_arm_cortex-a8_vfpv3.ipk
+Size: 68851
+SHA256sum: 9dae2df9698716b915721e8affa8d008bed252a8ffc76f4afd5b2e7b2332d33e
+Description:  nfqws
+
+Package: tpws
+Version: 71.4
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 102400
+Filename: tpws_71.4_arm_cortex-a8_vfpv3.ipk
+Size: 46710
+SHA256sum: 7ca32e73a828e7405eafe735d6a9ba6090e3761fdb3da7db81474c1e31531540
+Description:  tpws
+
