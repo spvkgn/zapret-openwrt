@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "architecture": "arm_cortex-a7",
+  "packages": {
+    "ip2net": "72",
+    "mdig": "72",
+    "nfqws": "72",
+    "tpws": "72"
+  }
+}
