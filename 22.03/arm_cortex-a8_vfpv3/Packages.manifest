@@ -1,0 +1,56 @@
+Package: ip2net
+Version: 72.1
+Depends: libc
+Source: package/zapret/ip2net
+SourceName: ip2net
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 4406
+Filename: ip2net_72.1_arm_cortex-a8_vfpv3.ipk
+Size: 5054
+SHA256sum: 9aff20bebf7bd831883c2ae0ee175a703b58ee0f9941aa14b42cfc00fb051613
+Description:  ip2net
+
+Package: mdig
+Version: 72.1
+Depends: libc
+Source: package/zapret/mdig
+SourceName: mdig
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 5181
+Filename: mdig_72.1_arm_cortex-a8_vfpv3.ipk
+Size: 5835
+SHA256sum: c53d7da7d9884e67d3251a155af8926df1eec9673541e3fa8cc33919186b0dd2
+Description:  mdig
+
+Package: nfqws
+Version: 72.1
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Source: package/zapret/nfqws
+SourceName: nfqws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 72424
+Filename: nfqws_72.1_arm_cortex-a8_vfpv3.ipk
+Size: 73206
+SHA256sum: 2ee2000cd36b015940641513dfea9ab127564477a72e60edbdc8f76cd0ed1587
+Description:  nfqws
+
+Package: tpws
+Version: 72.1
+Depends: libc, zlib, libcap
+Source: package/zapret/tpws
+SourceName: tpws
+Section: net
+SourceDateEpoch: 1721689001
+Architecture: arm_cortex-a8_vfpv3
+Installed-Size: 46302
+Filename: tpws_72.1_arm_cortex-a8_vfpv3.ipk
+Size: 46941
+SHA256sum: d42a1f49bd192458802d1395d66475a63120a395f7d22904a0119ef8ead2535a
+Description:  tpws
+

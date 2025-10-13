@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "architecture": "arm_cortex-a7_neon-vfpv4",
+  "packages": {
+    "ip2net": "72.1",
+    "mdig": "72.1",
+    "nfqws": "72.1",
+    "tpws": "72.1"
+  }
+}

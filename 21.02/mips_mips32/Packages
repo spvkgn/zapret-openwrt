@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 72.1
+Depends: libc
+Section: net
+Architecture: mips_mips32
+Installed-Size: 4804
+Filename: ip2net_72.1_mips_mips32.ipk
+Size: 5441
+SHA256sum: 6bc06e1f4420ff0bdcfc942426013b4974b40089307cea437d1e8e5d0839b593
+Description:  ip2net
+
+Package: mdig
+Version: 72.1
+Depends: libc
+Section: net
+Architecture: mips_mips32
+Installed-Size: 5402
+Filename: mdig_72.1_mips_mips32.ipk
+Size: 6056
+SHA256sum: cfe53126d69959b9daf54cb876911b940eeebbba02d3a33d3f0b67742885e970
+Description:  mdig
+
+Package: nfqws
+Version: 72.1
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: mips_mips32
+Installed-Size: 75228
+Filename: nfqws_72.1_mips_mips32.ipk
+Size: 75695
+SHA256sum: 59a6e7fe18fd2534d69f6c1864220074043973bacdc167723bee725f466609c1
+Description:  nfqws
+
+Package: tpws
+Version: 72.1
+Depends: libc, zlib, libcap
+Section: net
+Architecture: mips_mips32
+Installed-Size: 47055
+Filename: tpws_72.1_mips_mips32.ipk
+Size: 47249
+SHA256sum: 28566437ed477929bb53c8da0cc11449b1475349e1c6fc079df2e9aa830460c0
+Description:  tpws
+
