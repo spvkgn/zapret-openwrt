@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 72.2
+Depends: libc
+Section: net
+Architecture: arm_cortex-a15_neon-vfpv4
+Installed-Size: 4239
+Filename: ip2net_72.2_arm_cortex-a15_neon-vfpv4.ipk
+Size: 4895
+SHA256sum: 9f02e1f130325db544154936be948221a5f9c533c3b131d7f7be84593b5fc1d1
+Description:  ip2net
+
+Package: mdig
+Version: 72.2
+Depends: libc
+Section: net
+Architecture: arm_cortex-a15_neon-vfpv4
+Installed-Size: 5024
+Filename: mdig_72.2_arm_cortex-a15_neon-vfpv4.ipk
+Size: 5660
+SHA256sum: 9572418d06047450dde7a27d1c174015720e7917fa29a6984d631ac3b3634353
+Description:  mdig
+
+Package: nfqws
+Version: 72.2
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: arm_cortex-a15_neon-vfpv4
+Installed-Size: 73855
+Filename: nfqws_72.2_arm_cortex-a15_neon-vfpv4.ipk
+Size: 74552
+SHA256sum: a653b3dfa92351790aade3f297bb1ad3d037f48ced0f3f45bbf35d8789181b0c
+Description:  nfqws
+
+Package: tpws
+Version: 72.2
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_cortex-a15_neon-vfpv4
+Installed-Size: 45848
+Filename: tpws_72.2_arm_cortex-a15_neon-vfpv4.ipk
+Size: 46530
+SHA256sum: 795d26ba177559c1e9235ca310818e26a80a75c0c13f6e8d1a16d5bf6d5d03d3
+Description:  tpws
+
