@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "architecture": "mips64_octeonplus",
+  "packages": {
+    "ip2net": "72.3",
+    "mdig": "72.3",
+    "nfqws": "72.3",
+    "tpws": "72.3"
+  }
+}

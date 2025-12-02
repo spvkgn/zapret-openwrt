@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "architecture": "mipsel_24kc",
+  "packages": {
+    "ip2net": "72.3",
+    "mdig": "72.3",
+    "nfqws": "72.3",
+    "tpws": "72.3"
+  }
+}
