@@ -1,0 +1,44 @@
+Package: ip2net
+Version: 72.5
+Depends: libc
+Section: net
+Architecture: arm_fa526
+Installed-Size: 4439
+Filename: ip2net_72.5_arm_fa526.ipk
+Size: 5074
+SHA256sum: c03403157cada64981cf241314e701205ef7679fab78a6e0e067dcde6aa50d0c
+Description:  ip2net
+
+Package: mdig
+Version: 72.5
+Depends: libc
+Section: net
+Architecture: arm_fa526
+Installed-Size: 5213
+Filename: mdig_72.5_arm_fa526.ipk
+Size: 5849
+SHA256sum: 5c6c5a99d40bd996891b7117918188bad2621db816ff5bc4442f1c33eba9d9f6
+Description:  mdig
+
+Package: nfqws
+Version: 72.5
+Depends: libc, libnetfilter-queue1, lmnl, libcap, zlib
+Section: net
+Architecture: arm_fa526
+Installed-Size: 75074
+Filename: nfqws_72.5_arm_fa526.ipk
+Size: 75761
+SHA256sum: 03a35a143c6e81f3a44ee6b73c0516764b583ead0d0ff7a4df1979f930dd7b69
+Description:  nfqws
+
+Package: tpws
+Version: 72.5
+Depends: libc, zlib, libcap
+Section: net
+Architecture: arm_fa526
+Installed-Size: 46491
+Filename: tpws_72.5_arm_fa526.ipk
+Size: 47060
+SHA256sum: 4cbea62b478c98ed6510e25020092c4c4754d7b46da7ca423e512cbbbabc591f
+Description:  tpws
+
